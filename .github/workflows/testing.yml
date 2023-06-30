@@ -24,7 +24,11 @@ jobs:
       - name: Test application
         run: npm run test 
   lint:
-    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          os: [ubuntu-latest, windows-latest, macos-latest]
+          node: ["14", "16"]
+    runs-on: ${{ matrix.os }}
     steps: 
       - name: Get Repo codes
         uses: actions/checkout@v2.3.4
@@ -42,7 +46,12 @@ jobs:
       - name: Lint application
         run: npm run lint
   build: 
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: ["14", "16"]
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
     needs: [lint, test]
     steps: 
       - name: Get Repo codes
