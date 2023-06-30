@@ -59,7 +59,7 @@ jobs:
     needs: [lint, test]
     steps: 
       - name: Set environment file
-        run: echo "NODE_VERSION=${{ matrix.node }}" >> $GITHUB_ENV
+        run: echo "NODE_VERSION=${{ matrix.node }}" >> $GITHUB_OUTPUT
       - name: Get Repo codes
         uses: actions/checkout@v2.3.4
       - name: Set up Node.js
