@@ -2,10 +2,18 @@ name: Test React App
 on: push
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: ["14", "16"]
+    runs-on: ${{ matrix.os }}
     steps: 
       - name: Get Repo codes
         uses: actions/checkout@v2.3.4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -17,10 +25,13 @@ jobs:
         run: npm run test 
   lint:
     runs-on: ubuntu-latest
-    needs: test
     steps: 
       - name: Get Repo codes
         uses: actions/checkout@v2.3.4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
@@ -32,10 +43,14 @@ jobs:
         run: npm run lint
   build: 
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [lint, test]
     steps: 
       - name: Get Repo codes
         uses: actions/checkout@v2.3.4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
