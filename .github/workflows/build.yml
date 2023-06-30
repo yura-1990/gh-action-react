@@ -25,6 +25,7 @@ jobs:
           path: build
           name: build-files
   deploy:
+    needs: build
     strategy:
       fail-fast: true
       matrix:
